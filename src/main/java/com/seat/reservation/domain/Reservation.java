@@ -1,4 +1,4 @@
-package com.seat.reservation.model;
+package com.seat.reservation.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,19 +9,26 @@ public class Reservation {
   private String id;
 
   private String email;
+
   private String userName;
+
   private boolean emailEnabled;
+
+  private DriverInfo driverInfo;
+
+  private Vehicle vehicle;
+
   private boolean published;
-  private Driver driver;
 
   public Reservation() {
   }
 
-  public Reservation(String email, String userName, boolean emailEnabled, Driver driver) {
+  public Reservation(String email, String userName, boolean emailEnabled, DriverInfo driverInfo, Vehicle vehicle) {
     this.email = email;
     this.userName = userName;
     this.emailEnabled = emailEnabled;
-    this.driver = driver;
+    this.driverInfo = driverInfo;
+    this.vehicle = vehicle;
   }
 
   public String getId() {
@@ -52,12 +59,28 @@ public class Reservation {
     this.emailEnabled = emailEnabled;
   }
 
-  public Driver getDriver() {
-    return driver;
+  public DriverInfo getDriverInfo() {
+    return driverInfo;
   }
 
-  public void setDriver(Driver driver) {
-    this.driver = driver;
+  public void setDriverInfo(DriverInfo driverInfo) {
+    this.driverInfo = driverInfo;
+  }
+
+  public Vehicle getVehicle() {
+    return vehicle;
+  }
+
+  public void setVehicle(Vehicle vehicle) {
+    this.vehicle = vehicle;
+  }
+
+  public boolean isPublished() {
+    return published;
+  }
+
+  public void setPublished(boolean published) {
+    this.published = published;
   }
 
   @Override

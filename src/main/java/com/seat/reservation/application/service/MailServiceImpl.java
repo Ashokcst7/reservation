@@ -74,7 +74,7 @@ public class MailServiceImpl {
     }
 */
 
-public void sendMail(ArrayList<String> recipients, String bodyContent, String subject) {
+public void sendMail(String to, String bodyContent, String subject) {
 
     // Set required configs
     String fromUser = "seatreservation0@gmail.com";
@@ -104,14 +104,14 @@ public void sendMail(ArrayList<String> recipients, String bodyContent, String su
         MimeMessage message = new MimeMessage(session);
         // Set from email address
         message.setFrom(new InternetAddress(fromUser, "Seat reservation confirmation"));
-        // Set the recipient email address
-        InternetAddress[] addresses = new InternetAddress[recipients.size()];
+        // Set the recipient email address mulpitl
+/*        InternetAddress[] addresses = new InternetAddress[recipients.size()];
         for (int i = 0; i < recipients.size(); i++) {
             addresses[i] = new InternetAddress(recipients.get(i));
-        }
-        message.addRecipients(MimeMessage.RecipientType.TO, addresses);
+        }*/
+       // message.addRecipients(MimeMessage.RecipientType.TO, to);
         //Single recipient
-       // message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
+        message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
         // Set email subject
         message.setSubject(subject);
         // Set email body
@@ -123,7 +123,7 @@ public void sendMail(ArrayList<String> recipients, String bodyContent, String su
         // Send email
         transport.sendMessage(message, message.getAllRecipients());
         transport.close();
-        log.info("Email sent : ");
+        log.info("Email sent : " + to);
         System.out.println("done");
     } catch (UnsupportedEncodingException e) {
         e.printStackTrace();

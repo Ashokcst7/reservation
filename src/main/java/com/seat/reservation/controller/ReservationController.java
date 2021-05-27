@@ -1,7 +1,7 @@
 package com.seat.reservation.controller;
 
 import com.seat.reservation.application.ReservationServiceImpl;
-import com.seat.reservation.model.Reservation;
+import com.seat.reservation.domain.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package com.seat.reservation.application;
 
 import com.seat.reservation.application.service.MailServiceImpl;
-import com.seat.reservation.model.Reservation;
+import com.seat.reservation.domain.Reservation;
 import com.seat.reservation.repository.ReservationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +31,25 @@ public class ReservationServiceImpl {
     public boolean sendUserReservationEmail(String id) {
 
         boolean isEmailSend = false;
-        ArrayList<String> recipients = new ArrayList<>();
         Reservation reservationData = reservationRepository.findById(id).isPresent() ? reservationRepository.findById(id).get() : null;
 
         /** send email */
         try {
             if(null != reservationData){
-                recipients.add(reservationData.getEmail());
-                recipients.add(reservationData.getDriver().getEmail());
                 String userName = reservationData.getUserName();
-                String driverName = reservationData.getDriver().getName();
-                mailService.sendMail(recipients, "Body", "Subject");
+                String driverName = reservationData.getDriverInfo().getName();
+
+                String UserMailBody= String.join(
+                        System.getProperty("line.separator"), driverName + " has confirmed the " + reservationData.getVehicle().getType()
+                                + " requested by " + userName);
+                    mailService.sendMail(reservationData.getEmail(), UserMailBody, "Reservation confirmation");
+
+                String driverMailBody= String.join(
+                        System.getProperty("line.separator"), driverName + " has confirmed the " + reservationData.getVehicle().getType()
+                                + " requested by " + userName);
+
+                mailService.sendMail(reservationData.getDriverInfo().getEmail(), driverMailBody, "Reservation confirmation");
+
                 isEmailSend=true;
             }
 
@@ -63,7 +71,8 @@ public class ReservationServiceImpl {
 
         try {
             if (null != reservation) {
-                Reservation reservationData = reservationRepository.save(new Reservation(reservation.getEmail(), reservation.getUserName(), true, reservation.getDriver()));
+                Reservation reservationData = reservationRepository.save(new Reservation(reservation.getEmail(), reservation.getUserName(), true,
+                        reservation.getDriverInfo(), reservation.getVehicle()));
             }
             logger.debug("Successfully saved...");
         } catch (Exception e) {

@@ -1,6 +1,6 @@
-package com.seat.reservation.model;
+package com.seat.reservation.domain;
 
-public class Driver {
+public class DriverInfo {
 
     private String email;
     private String name;
